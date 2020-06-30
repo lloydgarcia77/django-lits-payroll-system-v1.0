@@ -1,0 +1,20 @@
+{% for cut_off_period  in cut_off_period_list %}
+<tr>
+    <td>{{ cut_off_period.id}}</td> 
+    <td> <span class="label label-warning">{{ cut_off_period.cut_off_period}} </span></td>
+    <td>{{ cut_off_period.date_created}}</td> 
+    <td> 
+        <div class="btn-group-vertical">
+            <button type="button" class="btn btn-block btn-danger btn-delete" data-toggle="tooltip"
+            title="Delete Attendance"  data-url="{% url 'application:delete_attendance' cut_off_period.id %}">
+                <span class="fa fa-fw fa-trash"></span>
+                Delete</button>
+            <a href="{{ cut_off_period.attendance_file.url}}" class="btn btn-block btn-info" data-toggle="tooltip"
+            title="Download Attendance" download>
+                <span class="fa fa-fw fa-download"></span>
+                Download</a>
+        </div>
+ 
+    </td>
+</tr>
+{% endfor %}

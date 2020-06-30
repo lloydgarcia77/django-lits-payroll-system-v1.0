@@ -1,0 +1,90 @@
+ {% extends 'registration/registration_base.html' %}
+{% load staticfiles %}
+{% block title %}
+LITS Register Page
+{% endblock title%}
+
+<style>
+    .example-modal .modal {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        right: auto;
+        left: auto;
+        display: block;
+        z-index: 1;
+    }
+
+    .example-modal .modal {
+        background: transparent !important;
+    }
+</style>
+
+{% block body_block %}
+<div class="register-box">
+    <div class="register-logo">
+        <a href="{% url 'index' %}"><b>LITS</b>System</a>
+    </div>  
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> 
+        <h4><i class="icon fa fa-ban"></i> Form Validation Error!</h4> 
+        {{ form.username.errors|striptags }} 
+        {{ form.email.errors|striptags }}
+        {{ form.password1.errors|striptags }}
+        {{ form.password2.errors|striptags }}
+    </div>
+    {% endif %} 
+    <div class="register-box-body">
+        <p class="login-box-msg">Register a new membership</p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.non_field_errors}}
+
+            <div class="form-group has-feedback">
+                {{form.username}}
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+       
+            </div>
+
+            <div class="form-group has-feedback">
+                {{form.email}}
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+
+            <div class="form-group has-feedback">
+                {{form.password1}}
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+
+            <div class="form-group has-feedback">
+                {{form.password2}}
+                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" required> I agree to the <a href="#">terms</a>
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="{% url 'login' %}" class="text-center">I already have a membership</a>
+        </div>
+    </div>
+    <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+ 
+{% endblock body_block %}

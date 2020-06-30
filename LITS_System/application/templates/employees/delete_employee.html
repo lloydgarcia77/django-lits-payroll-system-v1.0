@@ -1,0 +1,19 @@
+<form class="delete-employee" method="POST" enctype="multipart/form-data" data-url="{% url 'application:delete_employee' personal_info.id %}">
+    {% csrf_token %}
+    <div class="modal-header ">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Delete Employee</h4>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to permanently delete <strong>{{ personal_info.first_name }} {{ personal_info.middle_name }} {{ personal_info.last_name }} </strong>'s record? 
+            All of <strong>{{ user.username }}</strong> account will be deleted also, including attendance, payroll and etc. 
+            Do you still want to proceed?</p>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>        
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
+
+</form>

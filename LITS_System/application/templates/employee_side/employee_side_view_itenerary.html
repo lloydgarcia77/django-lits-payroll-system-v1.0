@@ -1,0 +1,213 @@
+{% extends 'employee_index_page.html' %}
+{% load staticfiles %}
+{% load humanize %} 
+{% block title %}
+Employee View Itenerary Form
+{% endblock title%}
+
+
+{% block css %}
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<!-- Bootstrap 3.3.7 -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+
+
+<!-- daterange picker -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %}">
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+<!-- Google Font -->
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/loading-btn.css' %}">
+<link rel="stylesheet" href="{% static 'css/loading.css' %}">
+
+{% endblock css %}
+
+
+{% block nav_dashboard %}
+
+<li class="treeview">
+    <a href="#">
+        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class=""><a href="{% url 'employee_index' %}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+        <!-- <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li> -->
+    </ul>
+</li>
+    
+{% endblock nav_dashboard %} 
+
+{% block nav_iteneraries %}
+<li class="active"><a href="{% url 'application:employee_side_manage_iteneraries_page' %}"><i class="fa fa-fw fa-calendar-times-o text-yellow"></i> <span>Iteneraries</span> </a></li>
+{% endblock nav_iteneraries %}
+
+{% block main_content %}
+
+
+<section class="content-header">
+    <h1>
+        Employee View Itenerary
+        <small>Manage details</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'employee_index' %}"><i class="fa fa-dashboard"></i> Home</a></li> 
+        <li class=""><a href="{% url 'application:employee_side_manage_iteneraries_page' %}"><i class="fa fa-fw fa-calendar"></i> Manage Iteneries</a></li> 
+        <li class="active"><i class="fa fa-fw fa-eye"></i> View Itenerary</li> 
+    </ol>
+</section>
+
+<div class="content">
+    <section class="invoice">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> LBPASCUAL INFORMATION TECHNOLOGY SOLUTIONS.
+                    <small class="pull-right">Date Filed: {{itenerary.date_filed}}</small>
+                </h2>
+            </div>
+            <!-- /.col --> 
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="lead">Itenerary Details</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr >
+                            <th >Name:</th>
+                            <td colspan="3">{{ itenerary.employee_itenerary_fk }}</td>
+                        </tr>
+                        <tr>
+                            <th>Postion:</th>
+                            <td colspan="3">{{ user.company_to_user.designation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Group/Department:</th>
+                            <td colspan="3">{{ user.company_to_user.department }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Prepared By:</th>
+                            <td colspan="3">{{ itenerary.employee_itenerary_fk }}</td>
+                        </tr>
+
+
+
+                        <!--  -->
+                        <tr style="background-color: #ECF0F5;">
+                            <th class="text-center" style="width:20%">Date</th>
+                            <th class="text-center" style="width:20%">Time-In</th>
+                            <th class="text-center" style="width:20%">Time-Out</th>
+                            <th class="text-center" style="width:40%">Reason:</th>
+                        </tr>
+
+                        
+                        {% for id in itenerary_details  %}
+                            <tr style="background-color: #ECF0F5;">
+                                <td class="text-center">{{id.date}}</td>
+                                <td class="text-center">{{id.timeIn}}</td>
+                                <td class="text-center">{{id.timeOut}}</td>
+                                <td class="text-center">{{id.reasons}}</td>
+                            </tr>
+                        {% endfor %}
+                            
+                        <!--  -->
+                        <tr>
+                            <th>Noted By:</th>
+                            <td colspan="3">{{ itenerary.noted_by }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Checked By:</th>
+                            <td colspan="3">{{ itenerary.checked_by }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Approved By:</th>
+                            <td colspan="3">{{ itenerary.approved_by }}</td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+            <div class="row no-print">
+                <div class="col-xs-12"> 
+                    <a href="{% url 'application:employee_side_manage_iteneraries_page' %}" class="btn btn-default"><i class="fa fa-fw fa-arrow-circle-left"></i> Back</a> 
+                    <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-download"></i> Generate PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+{% block js %}
+
+
+{% endblock js %}
+
+<!-- jQuery 3 -->
+<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- Slimscroll -->
+<script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- bootstrap datepicker -->
+<script src="{% static 'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+<!-- bootstrap time picker -->
+<script src="{% static 'plugins/timepicker/bootstrap-timepicker.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+ 
+
+<!-- DataTables -->
+<script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script> 
+ 
+  
+{% endblock main_content %}

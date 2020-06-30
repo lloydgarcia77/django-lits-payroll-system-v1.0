@@ -1,0 +1,69 @@
+{% load staticfiles %}
+<form class="edit-company-details-form" method="POST" enctype="multipart/form-data" data-url="{% url 'application:edit_company_details' %}">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Company Details</h4>
+      </div>
+
+      <div class="modal-body">
+        <p>Please fill-up all information&hellip;</p>
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-ban"></i> Form Validation Error!</h4>
+          {{ form.company_id.errors|striptags }}
+          {{ form.company_tin.errors|striptags }}
+          {{ form.designation.errors|striptags }}
+          {{ form.personal_tin.errors|striptags }}
+          {{ form.sss_number.errors|striptags }}
+          {{ form.pagibig.errors|striptags }}
+          {{ form.philhealth.errors|striptags }} 
+        </div>
+        {% endif %}
+
+            <!-- /.form group -->
+        <div class="form-group">
+            <label for="{{ form.company_id.id_for_label }}">Company ID:</label>
+            {{ form.company_id }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.company_tin.id_for_label }}">Company TIN:</label>
+            {{ form.company_tin }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.designation.id_for_label }}">Designation:</label>
+            {{ form.designation }}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.designation.id_for_label }}">Department:</label>
+          {{ form.department }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.personal_tin.id_for_label }}">Personal TIN:</label>
+            {{ form.personal_tin }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.sss_number.id_for_label }}">SSS Number:</label>
+            {{ form.sss_number }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.pagibig.id_for_label }}">Pag-ibig:</label>
+            {{ form.pagibig }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.philhealth.id_for_label }}">Philhealth:</label>
+            {{ form.philhealth }}
+        </div>
+
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div> 
+</form>

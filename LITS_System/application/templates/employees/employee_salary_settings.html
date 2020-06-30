@@ -1,0 +1,65 @@
+<form class="employee-payroll-settings-form" method="POST" data-url="{% url 'application:employee_payroll_settings' employee.key_id %}">
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Update Employee Payroll ({{employee.first_name }} {{ employee.middle_name }} {{ employee.last_name}})</h4>
+    </div>
+    <div class="modal-body"> 
+
+        {% include 'partials/_messages.html' %}
+        {{ formset.management_form }}
+        {% for form in formset.forms %}
+        <!-- ModelFormsets require form.id. It is rendered as a hidden field. You will need to implement it with both formsets. -->
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
+        {{ form.non_field_errors }}
+        {{ form.errors }}
+        <p>Enter employee base salary&hellip;</p>
+        <div class="form-group">
+            <label>Amount:</label>
+
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-fw fa-money"></i>
+              </div>
+              {{ form.amount }}
+            </div>
+        <!-- /.input group -->
+        </div>
+        <div class="form-group">
+            <label>Allowance:</label>
+
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-fw fa-calendar"></i>
+              </div>
+              {{ form.allowance }}
+        </div>
+        <!-- /.input group -->
+        </div>
+        <div class="form-group">
+            <label>Reason:</label>
+
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-fw fa-question"></i>
+              </div>
+              {{ form.reason }}
+            </div>
+        <!-- /.input group -->
+        </div> 
+        {% endfor %}
+
+        <div id="" style="display: none;">
+            <!-- Hidden -->
+            {{ formset.empty_form }}
+        </div>  
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>

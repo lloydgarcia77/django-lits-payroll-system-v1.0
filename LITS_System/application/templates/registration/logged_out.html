@@ -1,0 +1,26 @@
+{% extends 'registration/registration_base.html' %}
+{% load staticfiles %}
+{% block title %}
+LITS Log-out Page
+{% endblock title%}
+
+
+{% block body_block %}
+ <!-- Automatic element centering -->
+<div class="lockscreen-wrapper">
+    <div class="lockscreen-logo">
+      <a href="{% url 'login' %}"><b>LITS</b>System</a>
+    </div> 
+    <div class="help-block text-center">
+        You've been logged-out!
+    </div>
+    <div class="text-center">
+      <a href="{% url 'login' %}">Go to sign-in page</a>
+    </div>
+    <div class="lockscreen-footer text-center">
+      Copyright &copy; 2020 <b><a href="https://lits.com.ph" class="text-black">LITS</a></b><br>
+      All rights reserved
+    </div>
+  </div>
+  <!-- /.center -->
+{% endblock body_block %}

@@ -1,0 +1,431 @@
+{% extends 'index.html' %} 
+{% load staticfiles %} 
+{% load humanize %} 
+{% block title %} 
+Create Employee Payroll Page 
+{% endblock title%} 
+{% block css %}
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<!-- Bootstrap 3.3.7 -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+
+
+<!-- daterange picker -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %}">
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+<!-- Google Font -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/loading-btn.css' %}">
+<link rel="stylesheet" href="{% static 'css/loading.css' %}">
+
+<style>
+    #tblPaymentMethod th,
+    td,
+    #tblDeductions th,
+    td {
+        vertical-align: middle;
+    }
+</style>
+{% endblock css %} 
+{% block nav_dashboard %}
+<li class="treeview">
+    <a href="#">
+        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class=""><a href="{% url 'index' %}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+        <!-- <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li> -->
+    </ul>
+</li>
+{% endblock nav_dashboard %}
+{% block nav_employees %}
+<li class="active treeview">
+    <a href="#">
+        <i class="fa fa-fw fa-group"></i> <span>Employees</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class=""><a href="{% url 'application:employee_list' %}"><i class="fa fa-fw fa-users"></i> List
+        Employees</a></li>
+        <li class="active"><a href="{% url 'application:employee_payroll_manage' %}"><i class="fa fa-fw fa-credit-card"></i>
+        Manage Payroll</a></li>
+        <li><a href="{% url 'application:employee_manage_leaves_page' %}"><i class="fa fa-fw fa-car"></i> Leaves </a></li>
+        <li><a href="{% url 'application:employee_manage_iteneraries_page' %}"><i class="fa fa-fw fa-calendar-times-o"></i> Iteneraries </a></li>
+        <li><a href="{% url 'application:employee_manage_concerns_page' %}"><i class="fa fa-fw fa-commenting"></i> Concerns</a></li>
+    </ul>
+</li>
+{% endblock nav_employees %}
+
+ {% block main_content %}
+
+<section class="content-header">
+    <h1>
+        Employee Payroll Management
+        <small>Manage employee payroll</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class=""><a href="{% url 'application:employee_payroll_manage' %}"><i class="fa fa-fw fa-calendar-plus-o"></i>
+        Cut-Off List</a></li>
+        <li class=""><a href="{% url 'application:employee_payroll_manage_employee_list' cutoff.id %}"><i
+          class="fa fa-fw fa-calendar-minus-o"></i> {{cutoff}}</a></li>
+        <li class="active"><i class="fa fa-fw fa-credit-card"></i>Create payroll</li>
+    </ol>
+</section>
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content">
+
+    <!-- Content Header (Page header) -->
+    <!-- <section class="content-header">
+      <h1>
+        Invoice
+        <small>#007612</small>
+      </h1>
+    
+    </section>
+
+    <div class="pad margin no-print">
+      <div class="callout callout-info" style="margin-bottom: 0!important;">
+        <h4><i class="fa fa-info"></i> Note:</h4>
+        This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+      </div>
+    </div> -->
+
+    {% if not attendance %}
+    <div class="callout callout-danger">
+        <h4>Oops! The cut-off period was not available!</h4>
+        <p><strong>Please create the cut-off first!</strong></p>
+        <p>The possible issue is that the name or identity of the this employee was not matched on the uploaded attendance and the record was not proccessed or the attendance record was deleted. <strong>You can set it manually
+      </strong><a href="{% url 'application:employee_attendance_cut_off_manual' employee.key_id cutoff.id %}">Here</a>.
+        </p>
+    </div>
+    {% else %}
+    <!-- Main content -->
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> LBPASCUAL INFORMATION TECHNOLOGY SOLUTIONS.
+                    <small class="pull-right">Date: {{date_today}}</small>
+                </h2>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- info row -->
+        <div class="row invoice-info">
+            <div class="col-sm-4 invoice-col">
+                From
+                <address>
+          <strong>LBPASCUAL INFORMATION TECHNOLOGY SOLUTIONS.</strong><br>
+          The Penthouse, Townes Inc 916 <br>
+          Antonio Arnaiz Ave,Village, Makati, <br>
+          1223 Metro Manila 916 Pasay Road<br>
+          916 Antonio Arnaiz Ave, <br>
+          <strong>Email:</strong> <a href="">info@lits.com.ph</a>
+        </address>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 invoice-col">
+                To
+                <address>
+          <strong>{{employee.first_name}} {{employee.middle_name}} {{employee.last_name}}</strong><br>
+          {{employee.address}}<br>
+
+          <strong>Email:</strong> <a href="">{{employee.fk_user.email}}</a>
+        </address>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 invoice-col">
+                <b>Employee #: {{ company_details.company_to_user.company_id}}</b><br>
+                <br>
+                <b>Cut-Off ID:</b> {{cutoff.id}}<br>
+                <b>Payroll Cut-Off Period:</b> {{ cutoff.cut_off_period}}<br>
+                <b>Payroll Date:</b> {{date_today}} <br>
+                <b>Monthly Salary:</b> <b class="text-green"><u>{{employee_salary.amount|intcomma}}</u></b>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <form id="frmCreatePayroll" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-xs-6">
+                    <p class="lead">Payment Method</p>
+                    <div class="table-responsive">
+                        <table class="table" id="tblPaymentMethod">
+                            <tr>
+                                <th style="width:50%">Basic Pay:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_basicPay" id="basicPay" type="number" class="form-control" value="{{basic_pay}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Allowance:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_allowance" id="allowance" type="number" class="form-control" value="{{employee_salary.allowance}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Overtime Pay:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_overtimePay" id="overtimePay" type="number" class="form-control" value="{{overtime_pay}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Legal Holiday:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_legalHoliday" id="legalHoliday" type="number" class="form-control" value="{{legal_holiday}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Sunday/Special Holiday:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_sundaySpecialHoliday" id="sundaySpecialHoliday" type="number" class="form-control" value="{{sunday_special_holiday}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Late/Absences:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_lateAbsences" id="lateAbsences" type="number" class="form-control" value="{{late_absences}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Salary/Cash Advance:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_salaryCashAdvance" id="salaryCashAdvance" type="number" class="form-control">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Gross Pay:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_grossPay" id="grossPay" type="number" class="form-control text-green" value="{{gross_pay}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Net Pay:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_netPay" id="netPay" style="font-weight:bold;" type="number" class="form-control text-green" value="{{net_pay}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                        This computation maybe change for future purposes and include other payment method for further details and for computation update as standards for the company.
+                    </p>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-6">
+                    <p class="lead">Deductions</p>
+
+                    <div class="table-responsive">
+                        <table class="table" id="tblDeductions">
+
+                            <tr>
+                                <th>Philhealth Contribution:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_philhealContribution" id="philhealContribution" type="number" class="form-control">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Pag-ibig Contribution:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_pagibigContribution" id="pagibigContribution" type="number" class="form-control">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:50%">SSS Premiums:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_sssPremius" id="sssPremius" type="number" class="form-control" value="{{sss_contribution}}" readonly>
+                                        <!-- <span class="input-group-addon">.00</span> -->
+                                        <span class="input-group-addon"> <input name="_cboSSS" id="cboSSS" type="checkbox" data-toggle="tooltip"
+                        title="Allow SSS Deduction" checked></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Withholding Tax:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_withholdingTax" id="withholdingTax" type="number" class="form-control">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Pag-ibig Loan:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_pagibigLoan" id="pagibigLoan" type="number" class="form-control">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Salary/Cash Advance:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_deductionSalaryCashAdvance" id="deductionSalaryCashAdvance" type="number" class="form-control">
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Total Deductions:</th>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input name="_totalDeduction" id="totalDeduction" type="number" class="form-control text-red" value="{{total_deduction}}" readonly>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+
+            <!-- this row will not appear when printing -->
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+                    <button type="submit" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
+          </button>
+                    <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+            <i class="fa fa-download"></i> Generate PDF
+          </button>
+                </div>
+            </div>
+        </form>
+    </section>
+    <!-- /.content -->
+    <div class="clearfix"></div>
+    {% endif %}
+
+
+
+</div>
+
+
+{% block js %} 
+{% endblock js %}
+
+<!-- jQuery 3 -->
+<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- Slimscroll -->
+<script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+
+<script src="{% static 'js/employee_create_payroll.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+
+
+
+
+{% endblock main_content %}

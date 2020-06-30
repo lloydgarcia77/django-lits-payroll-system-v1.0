@@ -1,0 +1,285 @@
+{% extends 'index.html' %} 
+{% load staticfiles %} 
+{% load humanize %} 
+{% block title %} 
+View Employee Itenerary Form
+{% endblock title%} 
+
+
+{% block css %}
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<!-- Bootstrap 3.3.7 -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+
+
+<!-- daterange picker -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %}">
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+<!-- Google Font -->
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/loading-btn.css' %}">
+<link rel="stylesheet" href="{% static 'css/loading.css' %}">
+
+{% endblock css %}
+
+
+
+{% block nav_dashboard %}
+<li class="treeview">
+    <a href="#">
+        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class=""><a href="{% url 'index' %}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+        <!-- <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li> -->
+    </ul>
+</li>
+{% endblock nav_dashboard %}
+
+
+{% block nav_employees %}
+<li class="active treeview">
+    <a href="#">
+        <i class="fa fa-fw fa-group"></i> <span>Employees</span>
+        <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class=""><a href="{% url 'application:employee_list' %}"><i class="fa fa-fw fa-users"></i> List
+        Employees</a></li>
+        <li class=""><a href="{% url 'application:employee_payroll_manage' %}"><i class="fa fa-fw fa-credit-card"></i>
+        Manage Payroll</a></li>
+        <li class=""><a href="{% url 'application:employee_manage_leaves_page' %}"><i class="fa fa-fw fa-car"></i> Leaves </a></li>
+        <li class="active"><a href="{% url 'application:employee_manage_iteneraries_page' %}"><i class="fa fa-fw fa-calendar-times-o"></i> Iteneraries </a></li>
+        <li><a href="{% url 'application:employee_manage_concerns_page' %}"><i class="fa fa-fw fa-commenting"></i> Concerns</a></li>
+    </ul>
+</li>
+{% endblock nav_employees %}
+
+{% block main_content %}
+
+<section class="content-header">
+    <h1>
+        Employee Itenerary Management
+        <small>Manage employee Iteneraries</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> Home</a></li> 
+        <li class=""><a href="{% url 'application:employee_manage_iteneraries_page' %}"><i class="fa fa-fw fa-calendar-times-o"></i>Iteneraries</a></li>
+        <li class="active"><i class="fa fa-fw fa-eye"></i>View Itenerary</li>
+    </ol>
+</section>
+
+<div class="content">
+    <section class="invoice">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> LBPASCUAL INFORMATION TECHNOLOGY SOLUTIONS.
+                    <small class="pull-right">Date Filed: {{itenerary.date_filed}}</small>
+                </h2>
+            </div>
+            <!-- /.col --> 
+        </div>
+        <form  method="POST">
+            {% csrf_token %}        
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="lead">Itenerary Details</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr >
+                            <th >Name:</th>
+                            <td colspan="3">{{ itenerary.employee_itenerary_fk }}</td>
+                        </tr>
+                        <tr>
+                            <th>Postion:</th>
+                            <td colspan="3">{{ itenerary.employee_itenerary_fk.fk_user.company_to_user.designation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Group/Department:</th>
+                            <td colspan="3">{{ itenerary.employee_itenerary_fk.fk_user.company_to_user.department }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Prepared By:</th>
+                            <td colspan="3">{{ itenerary.employee_itenerary_fk }}</td>
+                        </tr>
+
+
+
+                        <!--  -->
+                        <tr style="background-color: #ECF0F5;">
+                            <th class="text-center" style="width:20%">Date</th>
+                            <th class="text-center" style="width:20%">Time-In</th>
+                            <th class="text-center" style="width:20%">Time-Out</th>
+                            <th class="text-center" style="width:40%">Reason:</th>
+                        </tr>
+
+                        
+                        {% for id in itenerary.employee_itenerary.all  %}
+                            <tr style="background-color: #ECF0F5;">
+                                <td class="text-center">{{id.date}}</td>
+                                <td class="text-center">{{id.timeIn}}</td>
+                                <td class="text-center">{{id.timeOut}}</td>
+                                <td class="text-center">{{id.reasons}}</td>
+                            </tr>
+                        {% endfor %}
+                            
+                        <!--  -->
+                        <tr>
+                            <th>Noted By:</th>
+                            <td colspan="3"> 
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                      <i class="fa fa-fw fa-sticky-note"></i>
+                                    </div> 
+                                    <!-- template tag string convertion -->
+                                    <!-- https://docs.python.org/2/library/stdtypes.html#string-formatting-operations -->
+                                 
+                                    <select name="notedByList" id="notedBy" class="form-control" style="width: 100%;">  
+                                        {% if itenerary.noted_by == None  %}
+                                        <option selected="selected">None</option>
+                                        {% endif %}
+                                                
+                                        {% for employee in employee_list  %}  
+                                            {% if itenerary.noted_by|stringformat:"s"  == employee|stringformat:"s"  %}
+                                            <option selected="selected">{{employee}}</option>                
+                                            {% else %}
+                                            <option>{{employee}}</option> 
+                                            {% endif %} 
+                                        {% endfor %} 
+                                    </select>
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Checked By:</th>
+                            <td colspan="3">  
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-fw fa-check-square-o"></i>
+                                        </div> 
+                                        <select name="checkedByList" id="checkedBy" class="form-control" style="width: 100%;">  
+                                            {% if itenerary.noted_by == None  %}
+                                            <option selected="selected">None</option>
+                                            {% endif %}
+                                                    
+                                            {% for employee in employee_list  %}  
+                                                {% if itenerary.checked_by|stringformat:"s"  == employee|stringformat:"s"  %}
+                                                <option selected="selected">{{employee}}</option>                                     
+                                                {% else %}
+                                                <option>{{employee}}</option> 
+                                                {% endif %} 
+                                            {% endfor %} 
+                                        </select>
+                                    </div>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Approved By:</th>
+                            <td colspan="3"> 
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-fw fa-thumbs-o-up"></i>
+                                    </div> 
+                                    <select name="approvedByList" id="approvedBy" class="form-control" style="width: 100%;">  
+                                        {% if itenerary.noted_by == None  %}
+                                        <option selected="selected">None</option>
+                                        {% endif %}
+                                                
+                                        {% for employee in employee_list  %}  
+                                            {% if itenerary.approved_by|stringformat:"s"  == employee|stringformat:"s"  %}
+                                            <option selected="selected">{{employee}}</option>                                     
+                                            {% else %}
+                                            <option>{{employee}}</option> 
+                                            {% endif %} 
+                                        {% endfor %} 
+                                    </select>
+                                </div>  
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+            <div class="row no-print">
+                <div class="col-xs-12"> 
+                    <a href="{% url 'application:employee_manage_iteneraries_page' %}" class="btn btn-default"><i class="fa fa-fw fa-arrow-circle-left"></i> Back</a> 
+                    <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-download"></i> Generate PDF
+                    </button>
+                    <button type="submit" class="btn btn-info pull-right" style="margin-right: 5px;"><span class="fa fa-fw fa-send"></span> Submit</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </section>
+</div>
+
+
+
+{% block js %} 
+{% endblock js %}
+
+<!-- jQuery 3 -->
+<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- Slimscroll -->
+<script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>  
+  
+{% endblock main_content %}

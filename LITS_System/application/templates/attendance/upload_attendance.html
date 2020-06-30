@@ -1,0 +1,33 @@
+{% load crispy_forms_tags %}
+<form class="upload-attendance" method="POST" enctype="multipart/form-data"
+    data-url="{% url 'application:upload_attendance' %}">
+    {% csrf_token %}
+    <div class="modal-header ">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Upload Attendance (.xlsx / .xls)</h4>
+    </div>
+    <div class="modal-body">
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-ban"></i> Error!</h4>
+            {{ form.errors.attendance_file|striptags }}
+          </div>
+        
+        {% endif %}
+        {% include 'partials/_messages.html' %}
+        <p>Please locate the attendance file&hellip;</p> 
+        
+        {{ form.attendance_file }}
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left btnClose" data-dismiss="modal">Close</button>
+        <button id="btnSave" type="submit" class="btn btn-primary ld-ext-right">
+            <span>Save changes</span>
+            <div class="ld ld-ring ld-spin"></div>
+        </button>
+        <!-- <input type="submit"  class="btn btn-primary" value="Add/Save"> -->
+    </div>
+</form>

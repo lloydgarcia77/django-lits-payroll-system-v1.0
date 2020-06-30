@@ -1,0 +1,171 @@
+{% extends 'employee_index_page.html' %}
+{% load staticfiles %}
+{% load humanize %} 
+{% block title %}
+Employee Manage Iteneraries
+{% endblock title%}
+
+{% block css %}
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<!-- Bootstrap 3.3.7 -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+<!-- Ionicons -->
+<link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+
+
+<!-- daterange picker -->
+<link rel="stylesheet" href="{% static 'bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %}">
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet" href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+
+<!-- Google Font -->
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+<!-- Select2 -->
+<link rel="stylesheet" href="{% static 'bower_components/select2/dist/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/loading-btn.css' %}">
+<link rel="stylesheet" href="{% static 'css/loading.css' %}">
+
+{% endblock css %}
+
+
+{% block nav_dashboard %}
+
+<li class="treeview">
+    <a href="#">
+        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class=""><a href="{% url 'employee_index' %}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+        <!-- <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li> -->
+    </ul>
+</li>
+    
+{% endblock nav_dashboard %} 
+
+{% block nav_iteneraries %}
+<li class="active"><a href="{% url 'application:employee_side_manage_iteneraries_page' %}"><i class="fa fa-fw fa-calendar-times-o text-yellow"></i> <span>Iteneraries</span> </a></li>
+{% endblock nav_iteneraries %}
+
+{% block main_content %}
+
+
+<section class="content-header">
+    <h1>
+        Employee Manage Iteneraries
+        <small>Manage details</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'employee_index' %}"><i class="fa fa-dashboard"></i> Home</a></li> 
+        <li class="active"><i class="fa fa-fw fa-calendar"></i> Manage Iteneries</li> 
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Employee Iteneraries Table</h3>
+
+                    <div class="box-tools"> 
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                          <li><a href="{% url 'application:employee_side_create_iteneraries_page' %}" data-toggle="tooltip" title="File New Itenerary Form"><i class="fa fa-fw fa-folder"></i> File Itenerary</a></li> 
+                        </ul>
+                      </div>
+                </div>
+                <div class="box-body">
+                    <table id="tblIteneraries" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">ID</th> 
+                                <th class="text-left">Date Filed</th>
+                                <th class="text-center" style="width: 15%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for itenerary in itenerary_list  %}
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-red"> {{ itenerary.id }}</span> 
+                                    </td>
+                                    <td>
+                                        <span class="label label-default">{{ itenerary.date_filed }}</span> 
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-danger btn-delete" data-toggle="tooltip" title="Delete" data-url="{% url 'application:employee_side_delete_iteneraries_page' itenerary.id %}"><i class="fa fa-fw fa-trash"></i></button>
+                                            <a href="{% url 'application:employee_side_view_iteneraries_page' itenerary.id %}" class="btn btn-warning" data-toggle="tooltip" title="View"><i class="fa fa-fw fa-eye"></i></a>
+                                            <a href="{% url 'application:employee_side_edit_iteneraries_page' itenerary.id %}" type="button" class="btn btn-info" data-toggle="tooltip" title="Edit"><i class="fa fa-fw fa-pencil-square-o"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                
+                        </tbody>
+
+                    </table> 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% block js %}
+
+
+{% endblock js %}
+
+<!-- jQuery 3 -->
+<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- Slimscroll -->
+<script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'js/employee_side_manage_iteneraries.js' %}"></script>
+  
+{% endblock main_content %}

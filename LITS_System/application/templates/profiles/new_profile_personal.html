@@ -1,0 +1,139 @@
+{% load staticfiles %}
+<form id="frmNewProfile" class="new-profile-form" method="POST" enctype="multipart/form-data" data-url="{% url 'application:new_user_profile' %}">
+  {% csrf_token %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Create Profile</h4>
+  </div>
+  <div class="modal-body">
+    <p>Please fill-up all information&hellip;</p>
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <h4><i class="icon fa fa-ban"></i> Form Validation Error!</h4>
+      {{ form.suffix.errors|striptags }}
+      {{ form.first_name.errors|striptags }}
+      {{ form.middle_name.errors|striptags }}
+      {{ form.last_name.errors|striptags }}
+      {{ form.dob.errors|striptags }}
+      {{ form.gender.errors|striptags }}
+      {{ form.age.errors|striptags }}
+      {{ form.address.errors|striptags }}
+      {{ form.date_started.errors|striptags }}
+      {{ form.education.errors|striptags }}
+      {{ form.experience.errors|striptags }}
+      {{ form.notes.errors|striptags }}
+      {{ form.emer_cont_pers.errors|striptags }}
+      {{ form.emer_cont_pers_cont_no.errors|striptags }}
+    </div>
+    {% endif %}
+    <div class="box-body">
+
+      <!-- /.form group -->
+      <div class="form-group">
+        <label for="{{ form.suffix.id_for_label }}">Suffix (If any.)</label>
+        {{ form.suffix }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.first_name.id_for_label }}">First name</label>
+        {{ form.first_name }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.middle_name.id_for_label }}">Middle name</label>
+        {{ form.middle_name }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.last_name.id_for_label }}">Last name</label>
+        {{ form.last_name }}
+      </div>
+
+      <div class="form-group">
+        <label>Date of birth:</label>
+        <div class="input-group date">
+          <div class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+          </div>
+          {{ form.dob }}
+        </div>
+        <!-- /.input group -->
+      </div>
+ 
+
+      <div class="form-group">
+        <label for="{{ form.gender.id_for_label }}">Gender</label>
+        {{ form.gender }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.age.id_for_label }}">Age</label>
+        {{ form.age }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.address.id_for_label }}">Address</label>
+        {{ form.address }}
+      </div>
+
+      <div class="form-group">
+        <label>Date Started:</label>
+        <div class="input-group date">
+          <div class="input-group-addon">
+            <i class="fa fa-calendar"></i>
+          </div>
+          {{ form.date_started }}
+        </div>
+        <!-- /.input group -->
+      </div> 
+
+      <div class="form-group">
+        <label for="{{ form.education.id_for_label }}">Education</label>
+        {{ form.education }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.experience.id_for_label }}">Experience</label>
+        {{ form.experience }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.notes.id_for_label }}">Notes</label>
+        {{ form.notes }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.emer_cont_pers.id_for_label }}">Emergency Contact Person</label>
+        {{ form.emer_cont_pers }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.emer_cont_pers_cont_no.id_for_label }}">Emergency Contact Person Number</label>
+        {{ form.emer_cont_pers_cont_no }}
+      </div>
+ 
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+  </div> 
+</form>
+
+
+<script>
+
+  //Datemask dd/mm/yyyy
+  //$('#datepicker').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+  //Date picker
+  //Initialize Select2 Elements
+  $('.select2').select2();
+  $('#dob').datepicker({
+    autoclose: true
+  });
+  $('#date_started').datepicker({
+    autoclose: true
+  });
+
+
+
+</script>

@@ -1,0 +1,30 @@
+<form class="add-skill-form" method="POST" data-url="{% url 'application:add_skill' %}">
+    {% csrf_token %}
+
+    <div class="modal-header ">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">New Skill</h4>
+    </div>
+    <div class="modal-body">
+        <p>Select your additional skill&hellip;</p>
+        {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-ban"></i> Error!</h4>
+            {{ form.skills.errors|striptags }}
+        </div>
+        {% endif %}
+        <div class="box-body"> 
+            <div class="input-group"> 
+                <span class="input-group-addon"><i class="fa fa-fw fa-search"></i></span>
+                {{ form.skills }}
+              </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>        
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <!-- <input type="submit"  class="btn btn-primary" value="Add/Save"> -->
+    </div>
+</form>

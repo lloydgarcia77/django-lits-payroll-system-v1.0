@@ -1,0 +1,21 @@
+
+{% if messages %}
+
+{% for message in messages %}
+<div class="alert {{message.tags}} alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {% if message.tags == 'alert-info' %}
+    <h4><i class="icon fa fa-info"></i> Info!</h4>
+    {% elif message.tags == 'alert-warning' %}
+    <h4><i class="icon fa fa-warning"></i> Warning!</h4>    
+    {% elif message.tags == 'alert-success' %}
+    <h4><i class="icon fa fa-check"></i> Success!</h4>
+    {% elif message.tags == 'alert-danger' %}
+    <h4><i class="icon fa fa-ban"></i> Error!</h4>
+    {% endif %}
+    {{ message|safe }}
+  </div>
+{% endfor %}   
+    
+{% endif %}
+    
